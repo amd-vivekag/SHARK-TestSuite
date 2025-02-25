@@ -43,20 +43,20 @@ class HfDownloadableModel(OnnxModelInfo):
                 "Please specify a cache directory path in the CACHE_DIR environment variable "
                 "for storing large model files."
             )
-        opset_version = 21
+        # opset_version = 21
         self.model_repo_path = full_model_path.replace("hf_", "")
         self.task = task_name
         # Appending the test name just adds one redundant level of nesting to the cache dir.
         # Use the value of the CACHE_DIR directly, the segregation of distinct models should
         # be handled by Huggingface itself.
         self.cache_dir = parent_cache_dir
-        super().__init__(name, onnx_model_path, opset_version)
+        super().__init__(name, onnx_model_path)  # , opset_version)
 
     def update_extra_options(self):
         # called in __init__
         # default to using opset version 21 for all ONNX Model Zoo models.
         self.extra_options = ExtraOptions(
-            import_model_options=ImporterOptions(opset_version=21)
+            import_model_options=ImporterOptions()  # opset_version=21)
         )
 
     def export_model(self, optim_level: str | None = None):
